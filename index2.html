@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Descubra o Número Primo (1–100)</title>
+  <style>
+    :root { font-family: system-ui, -apple-system, Segoe UI, Arial, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #111; background:#f3f4f6; }
+
+    header { padding: 16px; }
+    .title{
+      margin: 0;
+      font: 800 clamp(1.2rem, 4vw, 2rem)/1.1 system-ui, Arial, sans-serif;
+    }
+
+    /* --------- LAYOUT LADO A LADO --------- */
+    .layout{
+      width: min(1100px, 96vw);
+      margin: 8px auto 28px;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr; /* imagem | container */
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 900px){
+      .layout{ grid-template-columns: 1fr; }
+    }
+
+    /* Coluna da imagem */
+    .media{
+      background:#fff;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.12);
+      padding: 10px;
+    }
+    .media img{
+      display:block; width:100%;
+      border-radius: 12px;
+      object-fit: cover;
+      aspect-ratio: 4/3; /* mantém proporção agradável */
+    }
+
+    /* Coluna do container (interação) */
+    .container{
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.12);
+      padding: 18px 16px 22px;
+    }
+
+    .muted{ color: #444; font-size: .95rem; }
+    .italico{ font-style: italic; }
+    .oculta{ display: none; }
+    .exibe{ display: inline-block; }
+
+    form p.controls{ display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    input[type="number"]{
+      width: 140px; padding: 8px 10px; font-size: 1rem;
+      border: 1px solid #bbb; border-radius: 8px;
+      background:#fff;
+    }
+    input[type="submit"], input[type="button"]{
+      padding: 9px 14px; font-weight: 600; border: none; border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 2px 0 rgba(0,0,0,.1);
+    }
+    #btSubmit{ background: #2563eb; color: #fff; }
+    #btSubmit:disabled{ background: #9bb3f7; cursor: not-allowed; }
+    #btNovo{ background: #10b981; color: #083b2b; }
+
+    .painel{
+      margin-top: .75rem; padding: .75rem;
+      border: 1px solid #e5e7eb; border-radius: .6rem; background: #fff;
+    }
+    .candidatos{ line-height: 1.7; word-break: break-word; }
+    .badge{
+      display:inline-block; padding:.15rem .45rem; margin:.12rem .25rem;
+      border:1px solid #d1d5db; border-radius:.6rem; background:#f9fafb;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 class="title">Descubra o Número Primo (1–100)</h1>
+  </header>
+
+  <main class="layout">
+    <!-- COLUNA ESQUERDA: IMAGEM (agora em pasta local) -->
+    <aside class="media" aria-label="Máquina de garra com número primo">
+      <img
+      id="hero"
+      src="./images/garra-vitrine-1280.jpg" 
+      alt="Máquina de garra pegando o número 7 de pelúcia"
+      onerror="this.src='https://placehold.co/600x400/3b82f6/white?text=Imagem+do+Jogo&font=roboto'">
+    </aside>
+
+    <!-- COLUNA DIREITA: CONTAINER DE INTERAÇÃO -->
+    <section class="container">
+      <p class="muted">
+        Dica: “primo” significa ser divisível apenas por 1 e por ele mesmo.
+        <strong>O número 1 não é primo.</strong>
+      </p>
+
+      <form autocomplete="off">
+        <p class="controls">
+          Palpite (2 a 100):
+          <input type="number" min="2" max="100" id="inNumero" required autofocus />
+          <input type="submit" value="Adivinhar" id="btSubmit" />
+          <input type="button" value="Jogar novamente" id="btNovo" class="oculta" />
+        </p>
+      </form>
+
+      <h3>Erros: <span id="outErros">0</span></h3>
+      <h3>Chances: <span id="outChances">8</span></h3>
+      <h3 id="outDica" class="italico" aria-live="polite">
+        Dica: o número é primo entre 1 e 100.
+      </h3>
+
+      <div class="painel">
+        <label>
+          <input type="checkbox" id="ckCandidatos" />
+          Exibir candidatos restantes (apoio didático)
+        </label>
+        <div id="boxCandidatos" class="candidatos oculta"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+  "use strict";
+
+  /* ---------- utilidades matemáticas ---------- */
+  function isPrime(n){
+    if(n < 2) return false;
+    if(n % 2 === 0) return n === 2;
+    if(n % 5 === 0) return n === 5;
+    const r = Math.floor(Math.sqrt(n));
+    for(let d = 3; d <= r; d += 2){
+      if(n % d === 0) return false;
+    }
+    return true;
+  }
+  function primesUpTo(limit=100){
+    const ps = [];
+    for(let n=2;n<=limit;n++) if(isPrime(n)) ps.push(n);
+    return ps;
+  }
+
+  /* ---------- elementos ---------- */
+  const frm           = document.querySelector("form");
+  const inNumero      = document.querySelector("#inNumero");
+  const outErros      = document.querySelector("#outErros");
+  const outChances    = document.querySelector("#outChances");
+  const outDica       = document.querySelector("#outDica");
+  const btSubmit      = document.querySelector("#btSubmit");
+  const btNovo        = document.querySelector("#btNovo");
+  const ckCandidatos  = document.querySelector("#ckCandidatos");
+  const boxCandidatos = document.querySelector("#boxCandidatos");
+
+  /* ---------- estado ---------- */
+  const TODOS_PRIMOS = primesUpTo(100);
+  let candidatos     = [...TODOS_PRIMOS];
+  const CHANCES      = 8;
+  let erros          = [];
+  let dicaEtapa      = 0;
+
+  const sorteado = (() => {
+    const i = Math.floor(Math.random() * TODOS_PRIMOS.length);
+    return TODOS_PRIMOS[i];
+  })();
+
+  /* ---------- dicas progressivas ---------- */
+  function aplicarFiltro(fn, legenda){
+    candidatos = candidatos.filter(fn);
+    return legenda;
+  }
+  function proximaDica(){
+    switch(dicaEtapa++){
+      case 0:{
+        if(sorteado === 2){
+          return aplicarFiltro(p => p === 2, "É par e é o único primo par.");
+        } else {
+          return aplicarFiltro(p => p !== 2, "É ímpar.");
+        }
+      }
+      case 1:{
+        if(sorteado > 50){
+          return aplicarFiltro(p => p > 50, "Está acima de 50.");
+        } else {
+          return aplicarFiltro(p => p <= 50, "É 50 ou menor.");
+        }
+      }
+      case 2:{
+        const u = sorteado % 10;
+        if(sorteado === 5){
+          return aplicarFiltro(p => p === 5, "Termina em 5.");
+        } else if(sorteado === 2){
+          return aplicarFiltro(p => p === 2, "Termina em 2.");
+        } else {
+          return aplicarFiltro(p => p % 10 === u, `Termina em ${u}.`);
+        }
+      }
+      case 3:{
+        if(sorteado === 3){
+          return aplicarFiltro(p => p === 3, "É múltiplo de 3 (é o próprio 3).");
+        } else {
+          const r = sorteado % 3; // 1 ou 2
+          return aplicarFiltro(p => p % 3 === r, `Ao dividir por 3, o resto é ${r}.`);
+        }
+      }
+      default:{
+        const base = Math.floor((sorteado - 1) / 10) * 10 + 1; // 1..91
+        const topo = base + 9; // 10..100
+        return aplicarFiltro(p => p >= base && p <= topo, `Está entre ${base} e ${topo}.`);
+      }
+    }
+  }
+
+  /* ---------- UI ---------- */
+  function atualizarCandidatos(){
+    if(ckCandidatos.checked){
+      boxCandidatos.classList.remove("oculta");
+      boxCandidatos.innerHTML = candidatos.map(n => `<span class="badge">${n}</span>`).join("");
+    }else{
+      boxCandidatos.classList.add("oculta");
+      boxCandidatos.innerHTML = "";
+    }
+  }
+
+  /* ---------- lógica principal ---------- */
+  frm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const numero = Number(inNumero.value);
+
+    if(!Number.isInteger(numero) || numero < 2 || numero > 100){
+      alert("Digite um número inteiro entre 2 e 100.");
+      inNumero.focus(); inNumero.select(); return;
+    }
+    if(!isPrime(numero)){
+      alert("Seu palpite não é primo. Tente um número primo (lembre-se: 1 não é primo).");
+      frm.reset(); inNumero.focus(); return;
+    }
+
+    if(numero === sorteado){
+      outDica.textContent = `Parabéns! Você acertou: ${sorteado}.`;
+      btSubmit.disabled = true;
+      btNovo.classList.remove("oculta"); btNovo.classList.add("exibe");
+      atualizarCandidatos();
+      return;
+    }
+
+    if(erros.includes(numero)){
+      alert(`Você já testou o primo ${numero}. Tente outro.`);
+      frm.reset(); inNumero.focus(); return;
+    }
+
+    erros.push(numero);
+    const numErros   = erros.length;
+    const numChances = CHANCES - numErros;
+
+    outErros.textContent   = `${numErros} (${erros.join(", ")})`;
+    outChances.textContent = String(numChances);
+
+    const comparativo = numero < sorteado ? "maior" : "menor";
+    candidatos = candidatos.filter(p => comparativo === "maior" ? p > numero : p < numero);
+
+    const dicaNova = proximaDica();
+    outDica.textContent = `Dica: tente um número ${comparativo} que ${numero}. ${dicaNova}`;
+
+    if(numChances === 0){
+      alert("Suas chances acabaram…");
+      btSubmit.disabled = true;
+      btNovo.classList.remove("oculta"); btNovo.classList.add("exibe");
+      outDica.textContent = `Game Over! O número era ${sorteado}.`;
+    }
+
+    frm.reset(); inNumero.focus();
+    atualizarCandidatos();
+  });
+
+  btNovo.addEventListener("click", () => location.reload());
+  ckCandidatos.addEventListener("change", atualizarCandidatos);
+  atualizarCandidatos();
+  </script>
+</body>
+</html>
