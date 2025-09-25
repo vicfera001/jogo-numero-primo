@@ -1,4 +1,3 @@
-# jogo-numero-primo
 # Descubra o Número Primo (1–100)
 
 Jogo educativo em HTML/JS para treinar raciocínio com **números primos**.  
