@@ -28,8 +28,12 @@
       gap: 20px;
       align-items: start;
     }
-    @media (max-width: 900px){
-      .layout{ grid-template-columns: 1fr ; }
+    media{ flex: 1.1 1 0; }      /* coluna da imagem */
+    .container{ flex: 1 1 0; }    /* coluna do jogo */
+
+    /* Empilha apenas em telas estreitas */
+    @media (max-width: 767.98px){
+    .layout{ flex-direction: column; }
     }
        /* Coluna da imagem */
     .media{
