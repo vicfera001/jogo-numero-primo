@@ -24,18 +24,14 @@
       width: min(1100px, 96vw);
       margin: 8px auto 28px;
       display: grid;
-      grid-template-columns: 1.1fr 1fr; /* imagem | container */
+      grid-template-columns: 1fr; /* imagem | container */
       gap: 20px;
       align-items: start;
     }
-    @media (max-width: 900px){
-      .layout{ grid-template-columns: 1fr ; }
+    @media (min-width: 768px){
+      .layout{ grid-template-columns: 1.1fr 1fr ; }
     }
-    }
-    @media (min-width:901px){
-      .layout{ grid-template-columns: 1.1fr 1fr; }
-    }
-    /* Coluna da imagem */
+       /* Coluna da imagem */
     .media{
       background:#fff;
       border-radius: 14px;
