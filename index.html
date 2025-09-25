@@ -18,37 +18,34 @@
       margin: 0;
       font: 800 clamp(1.2rem, 4vw, 2rem)/1.1 system-ui, Arial, sans-serif;
     }
-
     /* --------- LAYOUT LADO A LADO --------- */
     .layout{
       width: min(1100px, 96vw);
       margin: 8px auto 28px;
       display: grid;
-      grid-template-columns: 1fr; /* imagem | container */
+      grid-template-columns: 1.1fr 1fr; /* imagem | container */
       gap: 20px;
       align-items: start;
     }
-
     @media (max-width: 900px){
-      .layout{ grid-template-columns: 1fr 1fr; }
+      .layout{ grid-template-columns: 1fr; }
     }
-      /* Coluna da imagem */
+
+    /* Coluna da imagem */
     .media{
       background:#fff;
       border-radius: 14px;
       box-shadow: 0 10px 30px rgba(0,0,0,.12);
       padding: 10px;
     }
-
-     /* Coluna do container (interação) */
-    .container{
-      background: #ffffff;
-      border-radius: 14px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.12);
-      padding: 18px 16px 22px;
+    .media img{
+      display:block; width:100%;
+      border-radius: 12px;
+      object-fit: cover;
+      aspect-ratio: 4/3; /* mantém proporção agradável */
     }
-    
-      /* Coluna do container (interação) */
+
+    /* Coluna do container (interação) */
     .container{
       background: #ffffff;
       border-radius: 14px;
