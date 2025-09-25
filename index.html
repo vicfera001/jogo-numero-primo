@@ -28,28 +28,29 @@
       gap: 20px;
       align-items: start;
     }
-    media{ flex: 1.1 1 0; }      /* coluna da imagem */
-    .container{ flex: 1 1 0; }    /* coluna do jogo */
-
-    /* Empilha apenas em telas estreitas */
-    @media (max-width: 767.98px){
-    .layout{ flex-direction: column; }
-    }
-       /* Coluna da imagem */
+      /* Coluna da imagem */
     .media{
       background:#fff;
       border-radius: 14px;
       box-shadow: 0 10px 30px rgba(0,0,0,.12);
       padding: 10px;
     }
-    .media img{
-      display:block; width:100%;
-      border-radius: 12px;
-      object-fit: cover;
-      aspect-ratio: 4/3; /* mantém proporção agradável */
+
+      /* Coluna do container (interação) */
+    .container{
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.12);
+      padding: 18px 16px 22px;
     }
 
-    /* Coluna do container (interação) */
+      /* Empilha em telas estreitas */
+    @media (max-width: 767.98px){
+      .layout{ 
+        grid-template-columns: 1fr; /* Uma coluna em telas pequenas */
+      }
+    }
+      /* Coluna do container (interação) */
     .container{
       background: #ffffff;
       border-radius: 14px;
