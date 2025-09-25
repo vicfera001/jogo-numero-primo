@@ -28,40 +28,26 @@
       gap: 20px;
       align-items: start;
     }
+
+    @media (max-width: 900px){
+      .layout{ grid-template-columns: 1fr 1fr; }
+    }
       /* Coluna da imagem */
     .media{
       background:#fff;
       border-radius: 14px;
       box-shadow: 0 10px 30px rgba(0,0,0,.12);
       padding: 10px;
-      width:100%
     }
 
-      /* Ajusta a imagem para não ultrapassar o container */
-    .media img{
-      display:block; 
-      width:100%;
-      border-radius: 12px;
-      object-fit: cover;
-      aspect-ratio: 4/3;
-      max-width: 100%; /* Garante que não ultrapasse o container */
-    }
-
-      /* Coluna do container (interação) */
+     /* Coluna do container (interação) */
     .container{
       background: #ffffff;
       border-radius: 14px;
       box-shadow: 0 10px 30px rgba(0,0,0,.12);
       padding: 18px 16px 22px;
-      width:100%
     }
-
-      /* Empilha em telas estreitas */
-    @media (max-width: 767.98px){
-      .layout{ 
-        grid-template-columns: 1fr; /* Uma coluna em telas pequenas */
-      }
-    }
+    
       /* Coluna do container (interação) */
     .container{
       background: #ffffff;
