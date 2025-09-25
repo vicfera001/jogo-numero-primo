@@ -24,10 +24,13 @@
       gap: 20px;
       align-items: start;
     }
-    @media (max-width: 900px){
+    @media (min-width: 768px){
+      .layout{ grid-template-columns: 1.1fr 1fr; }
+    }
+    }
+    @media (max-width:767.98px){
       .layout{ grid-template-columns: 1fr; }
     }
-
     /* Coluna da imagem */
     .media{
       background:#fff;
