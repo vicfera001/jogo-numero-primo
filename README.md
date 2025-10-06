@@ -3,7 +3,7 @@
 Jogo educativo em HTML/JS para treinar raciocínio com **números primos**.  
 O objetivo é **adivinhar** o primo sorteado entre 2 e 100. A cada tentativa, o jogo oferece **dicas progressivas** (paridade, faixa, dígito final, resto por 3 e intervalo de dezenas) e permite exibir os **candidatos restantes**.
 
-## 🎯 Objetivos pedagógicos
+## 🎯 Objetivos
 - Compreender o conceito de **número primo** e **não primo**.
 - Desenvolver **estratégias de busca** com base em restrições/dicas.
 - Promover a **metacognição**: acompanhar como as pistas reduzem o espaço de possibilidades.
